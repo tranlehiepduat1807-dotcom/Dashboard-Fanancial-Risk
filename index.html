@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-type="software" data-radius="sharp">
 <head>
 <meta charset="utf-8">
+<meta name="page-type" content="software"><meta name="site-kind" content="software">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard rủi ro an toàn tài chính</title>
 <meta name="description" content="Dashboard rủi ro an toàn tài chính công ty chứng khoán theo TT102/2025, sử dụng dữ liệu mẫu.">
@@ -778,14 +779,19 @@ table.dt td.w{line-height:1.5;padding-top:9px;padding-bottom:9px}
 @media(max-width:640px){.range{flex-wrap:wrap;overflow:visible!important;gap:6px}.range .presets{width:100%;display:flex}.range .presets button{flex:1}.range input[type=date]{min-width:0;width:calc(50% - 3px)}.topbar{gap:8px;align-items:center}.topbar>div:first-child{flex:1;min-width:0}.topbar h1{font-size:17px}.topbar .spacer{display:none}.asof{min-width:0;flex:0 0 113px}.rail{grid-template-columns:repeat(2,minmax(0,1fr))}.rail .m{min-width:0}.rail .m .v{font-size:22px}.ck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ck-grid .ck-tile:last-child{grid-column:1/-1}.ck-grid .ck-tile:last-child strong{font-size:20px}.ck-two,.ck-bands{grid-template-columns:1fr 1fr}.ck-timeline{grid-template-columns:repeat(3,minmax(0,1fr))}.ck-period{padding:8px}.ck-period>*{font-size:10px}.ck-action{flex-direction:column;gap:2px}.ck-count{float:none;display:block;margin:5px 0 0 14px}.ck-driver-totals{grid-template-columns:1fr}.ck-period-range{flex-wrap:wrap}.ck-history{grid-template-columns:1fr;gap:8px}.ck-data-status{gap:4px}.ck-status{font-size:10px}.ck-summary .phead{gap:10px}.brand b{font-size:14px}.brand span{font-size:10px}}
 .rail .m .v.sm{font-size:15.5px;line-height:1.4}.ck-value-unit{display:block;font-size:10.5px;line-height:1.5;font-weight:400;letter-spacing:0;margin-top:5px;color:var(--ink-3);white-space:nowrap}@media(max-width:900px){.modnav a{flex:0 0 auto;grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="enterprise.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%2317334f%27/%3E%3Ctext x=%278%27 y=%2723%27 font-family=%27Arial%27 font-size=%2722%27 fill=%27white%27%3ER%3C/text%3E%3C/svg%3E">
 </head>
 <body>
+<a class="skip-enterprise" href="#views">Đến nội dung</a>
 
 <div class="app" id="app">
   <aside class="side">
-    <div class="brand">
-      <b>Dashboard rủi ro an toàn tài chính</b>
-    </div>
+    <div class="brand"><div class="enterprise-mark">R/M</div><div><b>Risk Management</b><span>An toàn tài chính</span></div></div>
+    <button id="enterpriseMenu" class="enterprise-menu" aria-label="Mở menu điều hướng" aria-expanded="false" aria-controls="nav">Menu</button>
+    <div class="enterprise-space">Không gian phân tích<strong>Công ty chứng khoán</strong></div>
+    <div class="nav-heading">Quản trị rủi ro</div>
     <nav class="modnav" id="nav" aria-label="Điều hướng module"></nav>
     <div class="side-foot">
       <b>Nguồn dữ liệu</b>
@@ -26133,5 +26139,6 @@ async function boot() {
 document.addEventListener('DOMContentLoaded', boot);
 
 </script>
+<script src="enterprise.js"></script>
 </body>
 </html>
