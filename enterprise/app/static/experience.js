@@ -43,7 +43,7 @@ render = function () {
   $("#title").textContent =
     route === "overview" ? "Tổng quan rủi ro" : pages[route][0];
   $("#data-context").innerHTML =
-    `<div class="context-strip"><span><i class="status-dot"></i><strong>${a.sample_data ? "Dữ liệu minh họa" : "Dữ liệu nội bộ"}</strong> · ${a.price_asof ? "Ngày giá: " + esc(a.price_asof) : "Chưa có lịch sử giá"}</span><a href="#integration">FSS FLEX · Chưa kết nối ↗</a></div>`;
+    `<div class="context-strip"><span><i class="status-dot"></i><strong>${a.sample_data ? "Dữ liệu minh họa" : "Dữ liệu nội bộ"}</strong> · ${a.price_asof ? "Ngày giá: " + esc(a.price_asof) : "Chưa có lịch sử giá"}</span><a href="#integration">Nguồn dữ liệu ↗</a></div>`;
   document.querySelectorAll("#nav a").forEach((link) => {
     const span = link.querySelector("span");
     if (span) span.innerHTML = navIcon(link.dataset.route);

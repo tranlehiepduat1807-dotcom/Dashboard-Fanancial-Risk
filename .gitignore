@@ -11,3 +11,7 @@ enterprise/.qa-credentials.json
 enterprise/qa-private/
 
 enterprise/.qa-ui.json
+enterprise/.tools/
+enterprise/.runtime/
+
+enterprise/tmp/

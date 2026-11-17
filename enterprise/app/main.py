@@ -332,6 +332,9 @@ async def import_records(kind:str,req:Request):
         audit(db,user['username'],'import',kind,{'count':len(ids),'key':key,'digest':digest})
     return result
 
+from app.tcbs import install as install_tcbs
+install_tcbs(app,engine,authenticated,audit,now,validate)
+
 @app.get('/')
 def index(): return FileResponse(BASE/'static/index.html')
 app.mount('/static',StaticFiles(directory=BASE/'static'),name='static')

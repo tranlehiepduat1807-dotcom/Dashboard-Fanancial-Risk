@@ -126,3 +126,75 @@ def test_report_uses_selected_confidence():
     c=client('viewer')
     assert c.get('/api/report?confidence=0.975&shock=-0.2').json()['confidence']==0.975
     assert c.get('/api/report?confidence=0.5').status_code==422
+
+def test_tcbs_status_hides_secrets(monkeypatch):
+    monkeypatch.setenv('TCBS_BEARER_TOKEN','never-return-this-token')
+    r=client('viewer').get('/api/tcbs/status');assert r.status_code==200 and r.json()['configured']
+    assert 'never-return-this-token' not in r.text
+    assert r.json()['base_url']=='https://openapi.tcbs.com.vn'
+
+def test_tcbs_preview_permissions_and_csrf():
+    assert client('viewer').post('/api/tcbs/preview',json={'resource':'assets','source':'sample'}).status_code==403
+    c=client('analyst');c.headers.pop('X-CSRF-Token')
+    assert c.post('/api/tcbs/preview',json={'resource':'assets','source':'sample'}).status_code==403
+
+def test_tcbs_sample_money_and_rtt():
+    c=client('analyst')
+    for resource in ['assets','cash','risk','quotes','history']:
+        r=c.post('/api/tcbs/preview',json={'resource':resource,'source':'sample'});assert r.status_code==200,r.text
+        assert r.json()['source']=='sample' and not r.json()['can_submit']
+    assets=c.post('/api/tcbs/preview',json={'resource':'assets','source':'sample'}).json()
+    assert assets['rows'][0]['value']==pytest.approx(.026)
+    assert c.post('/api/tcbs/snapshots/'+assets['id']+'/submit').status_code==422
+    risk=c.post('/api/tcbs/preview',json={'resource':'risk','source':'sample'}).json()['rows'][0]
+    assert risk['rtt']==75 and 'ltv' not in risk
+
+def test_tcbs_live_requires_configuration(monkeypatch):
+    monkeypatch.delenv('TCBS_BEARER_TOKEN',raising=False)
+    r=client('analyst').post('/api/tcbs/preview',json={'resource':'assets','source':'live','account':'12345'})
+    assert r.status_code==409
+
+def test_tcbs_invalid_resource_and_path():
+    c=client('analyst')
+    assert c.post('/api/tcbs/preview',json={'resource':'place-order','source':'live'}).status_code==422
+    assert c.post('/api/tcbs/preview',json={'resource':'assets','source':'live','account':'../orders'}).status_code==422
+
+def test_tcbs_history_upload_maker_checker():
+    c=client('analyst');other=client('approver')
+    payload={'ticker':'TCB','data':[{'close':26000,'tradingDate':'2026-11-12T17:00:00Z'}]}
+    r=c.post('/api/tcbs/preview',json={'resource':'history','source':'upload','payload':payload});assert r.status_code==200,r.text
+    snapshot=r.json();assert snapshot['rows'][0]['date']=='2026-11-13'
+    assert client('admin').post('/api/tcbs/snapshots/'+snapshot['id']+'/submit').status_code==404
+    submitted=c.post('/api/tcbs/snapshots/'+snapshot['id']+'/submit');assert submitted.status_code==200 and submitted.json()['count']==1
+    assert c.post('/api/tcbs/snapshots/'+snapshot['id']+'/submit').status_code==409
+    aid=submitted.json()['approval_ids'][0]
+    assert other.post('/api/approvals/'+aid+'/approve',json={'reason':'Checked source and units'}).status_code==200
+    assert any(p['symbol']=='TCB' and p['date']=='2026-11-13' for p in c.get('/api/records/prices').json())
+
+def test_tcbs_invalid_payload_and_partial_cash():
+    c=client('analyst')
+    for resource,payload in [('history',{'ticker':'TCB','data':[{'close':-1,'tradingDate':'2026-11-12T17:00:00Z'}]}),('assets',{'assets':[{'symbol':'TCB'}]}),('cash',{'totalCount':2,'data':[{'accountNo':'1','cashBalance':1,'bodBalance':1,'pp0forBF':1}]})]:
+        assert c.post('/api/tcbs/preview',json={'resource':resource,'source':'upload','payload':payload}).status_code==422
+
+def test_tcbs_mock_live_read_only(monkeypatch):
+    import app.tcbs as tcbs
+    calls=[]
+    monkeypatch.setenv('TCBS_BEARER_TOKEN','test-token')
+    original=tcbs.httpx.Client
+    import httpx
+    def handler(request):
+        calls.append(request)
+        return httpx.Response(200,json={'assets':[{'symbol':'TCB','quantity':1,'avgPrice':2,'marketValue':26000}]})
+    monkeypatch.setattr(tcbs.httpx,'Client',lambda **kw:original(**kw,transport=httpx.MockTransport(handler)))
+    rows=tcbs.fetch_readonly('assets','12345','',100)
+    assert rows['assets'][0]['symbol']=='TCB'
+    assert len(calls)==1 and calls[0].method=='GET'
+    assert str(calls[0].url)=='https://openapi.tcbs.com.vn/aion/v1/accounts/12345/se'
+
+def test_tcbs_http_error_redacted(monkeypatch):
+    import app.tcbs as tcbs,httpx
+    monkeypatch.setenv('TCBS_BEARER_TOKEN','secret-never-log')
+    original=tcbs.httpx.Client
+    monkeypatch.setattr(tcbs.httpx,'Client',lambda **kw:original(**kw,transport=httpx.MockTransport(lambda request:httpx.Response(401,text='secret-never-log'))))
+    with pytest.raises(Exception) as exc: tcbs.fetch_readonly('assets','123','','100')
+    assert 'secret-never-log' not in str(exc.value)

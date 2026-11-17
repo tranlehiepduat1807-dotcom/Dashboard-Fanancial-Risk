@@ -83,7 +83,7 @@ Batch chỉ thêm mới; sửa bản ghi bằng POST `/api/records/{kind}` cùng
 node --check app/static/app.js
 ```
 
-19 kiểm thử API: xác thực, CSRF, viewer, maker/checker, conflict phiên bản, nhập nguyên tử, idempotency, khóa nghiệp vụ, VaR/ES trên mẫu biết trước, margin/thanh khoản/vốn, thiếu giá, xuất/audit, tạo user, cookie và logout. Kiểm tra trình duyệt cục bộ xác nhận login, 15 màn hình, lập đề nghị, hàng đợi, menu mobile, không tràn trang ở 390px và không lỗi JS. Chưa kiểm thử PostgreSQL, tải >20 người, pentest, phục hồi thảm họa hoặc tính phù hợp pháp lý. Một cảnh báo deprecation từ testclient/httpx của dependency vẫn còn.
+30 kiểm thử API: xác thực, CSRF, viewer, maker/checker, conflict phiên bản, nhập nguyên tử, idempotency, khóa nghiệp vụ, VaR/ES trên mẫu biết trước, margin/thanh khoản/vốn, thiếu giá, xuất/audit, tạo user, cookie và logout. Kiểm tra trình duyệt cục bộ xác nhận login, 15 màn hình, lập đề nghị, hàng đợi, menu mobile, không tràn trang ở 390px và không lỗi JS. Chưa kiểm thử PostgreSQL, tải >20 người, pentest, phục hồi thảm họa hoặc tính phù hợp pháp lý. Một cảnh báo deprecation từ testclient/httpx của dependency vẫn còn.
 
 Giao diện đã kiểm tra trực quan ở 1440px và 390px. Không áp dụng hero quảng cáo/fullscreen vào các màn hình tác nghiệp. Chưa chạy lại toàn bộ marketing design gate cho ứng dụng mới.
 
@@ -91,3 +91,7 @@ Giao diện đã kiểm tra trực quan ở 1440px và 390px. Không áp dụng 
 Thông tin tích hợp FSS FLEX được bổ sung tại [connectors/FSS_FLEX.md](connectors/FSS_FLEX.md). Adapter ánh xạ export đã có kiểm thử; chưa kết nối REST do chưa có spec/sandbox.
 
 Đăng ký truy cập: tại trang đăng nhập, chọn “Chưa có tài khoản? Đăng ký truy cập”. Người mới có quyền viewer và trạng thái chưa kích hoạt; admin vào Người dùng để kích hoạt. Không cho tự đăng ký quyền admin.
+
+## Nguồn TCBS iFlash
+
+Đã có màn hình xem trước TCBS tại **Dữ liệu & kết nối** với 5 nhóm: tài sản cổ phiếu, số dư tiền, rủi ro margin/Rtt, mã–giá và lịch sử nến ngày. Khi chưa có API Key/JWT, dùng dữ liệu minh họa hoặc phản hồi JSON. Lịch sử giá thật/JSON được gửi qua phê duyệt; dữ liệu minh họa không được nhập. Thông tin cấu hình, ánh xạ và giới hạn được ghi tại [connectors/TCBS.md](connectors/TCBS.md). Chưa có kết nối TCBS thật được nghiệm thu.
