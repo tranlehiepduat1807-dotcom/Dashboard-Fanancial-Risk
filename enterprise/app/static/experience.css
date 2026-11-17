@@ -1536,3 +1536,65 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 nav a:focus-visible,.sidebar-bottom button:focus-visible{outline-color:#b2e5d1}
 .login-form>p{color:#3d5358}.login-form small{color:#5c7276}.login-form input::placeholder{color:#5c7276}
 .org:after{display:none}
+
+/* Keep import actions aligned to the select, rather than its label + field group. */
+.import-toolbar {
+  align-items: flex-end;
+  gap: 12px;
+}
+.import-toolbar .import-kind-field {
+  flex: 0 1 240px;
+  min-width: 200px;
+  gap: 8px;
+}
+.import-toolbar select,
+.import-toolbar > button,
+.import-toolbar .file,
+.import-toolbar .file > span {
+  height: 44px;
+  min-height: 44px;
+}
+.import-toolbar > button,
+.import-toolbar .file > span {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  padding: 11px 15px;
+  white-space: nowrap;
+}
+.import-toolbar .file {
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+  color: var(--navy);
+}
+.import-toolbar .file > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #d7dfe1;
+}
+.import-toolbar .file:hover > span {
+  background: #f0f5f4;
+  border-color: #a9beb9;
+}
+.import-toolbar .file:focus-within {
+  outline-color: #126c60;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.import-toolbar .file input {
+  max-width: none;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .import-toolbar .import-kind-field,
+  .import-toolbar > button,
+  .import-toolbar .file {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+  }
+}

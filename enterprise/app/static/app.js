@@ -449,7 +449,7 @@ function render() {
     html =
       panel(
         "Tiếp nhận dữ liệu",
-        `<div class="panel-body"><div class="toolbar"><label>Loại dữ liệu<select id="import-kind">${Object.keys(
+        `<div class="panel-body"><div class="toolbar import-toolbar"><label class="import-kind-field">Loại dữ liệu<select id="import-kind">${Object.keys(
           schema,
         )
           .map(
