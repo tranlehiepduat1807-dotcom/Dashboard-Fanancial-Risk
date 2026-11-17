@@ -41,12 +41,27 @@
             required /></label
         ><button class="primary">Vào không gian làm việc →</button>
         <p id="login-error" role="alert"></p>
+        <button type="button" id="open-register">Chưa có tài khoản? Đăng ký truy cập</button>
         <small
           >Dữ liệu lưu trên máy chủ của tổ chức. Liên hệ quản trị viên nếu cần
           cấp quyền.</small
         >
       </form>
     </div>
+    <dialog id="register-dialog">
+      <form id="register-form">
+        <div class="dialog-head"><h2>Đăng ký truy cập</h2><button type="button" id="close-register" aria-label="Đóng đăng ký">×</button></div>
+        <p class="muted">Tài khoản mới cần quản trị viên kích hoạt và được cấp quyền chỉ xem.</p>
+        <div class="form-grid">
+          <label>Họ tên<input name="name" autocomplete="name" maxlength="200" required></label>
+          <label>Tên đăng nhập<input name="username" autocomplete="username" minlength="3" maxlength="100" required></label>
+          <label>Mật khẩu<input name="password" type="password" autocomplete="new-password" minlength="12" maxlength="200" required></label>
+          <label>Nhập lại mật khẩu<input name="confirm" type="password" autocomplete="new-password" minlength="12" required></label>
+        </div>
+        <p id="register-result" role="status"></p>
+        <div class="dialog-actions"><button type="submit" class="primary">Gửi đăng ký</button></div>
+      </form>
+    </dialog>
     <div id="workspace" hidden>
       <aside id="sidebar">
         <div class="brand">

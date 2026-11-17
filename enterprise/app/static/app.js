@@ -861,3 +861,15 @@ window.addEventListener("hashchange", () => {
   if (user) navigate();
 });
 start().catch(() => showLogin());
+$("#open-register").onclick = () => { $("#register-result").textContent=""; $("#register-dialog").showModal(); };
+$("#close-register").onclick = () => $("#register-dialog").close();
+$("#register-form").onsubmit = async e => {
+  e.preventDefault();
+  const data=Object.fromEntries(new FormData(e.target));
+  if(data.password!==data.confirm){$("#register-result").textContent="Hai mật khẩu chưa trùng nhau.";return;}
+  delete data.confirm;
+  const button=e.target.querySelector('[type="submit"]');button.disabled=true;
+  try {const r=await api('register',{method:'POST',body:JSON.stringify(data)}); e.target.reset(); $("#register-result").textContent=r.message;}
+  catch(err){$("#register-result").textContent=err.message;}
+  finally{button.disabled=false;}
+};

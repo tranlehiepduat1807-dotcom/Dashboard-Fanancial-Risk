@@ -89,3 +89,5 @@ Giao diện đã kiểm tra trực quan ở 1440px và 390px. Không áp dụng 
 
 
 Thông tin tích hợp FSS FLEX được bổ sung tại [connectors/FSS_FLEX.md](connectors/FSS_FLEX.md). Adapter ánh xạ export đã có kiểm thử; chưa kết nối REST do chưa có spec/sandbox.
+
+Đăng ký truy cập: tại trang đăng nhập, chọn “Chưa có tài khoản? Đăng ký truy cập”. Người mới có quyền viewer và trạng thái chưa kích hoạt; admin vào Người dùng để kích hoạt. Không cho tự đăng ký quyền admin.

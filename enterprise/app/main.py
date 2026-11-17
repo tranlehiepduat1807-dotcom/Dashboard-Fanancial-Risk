@@ -178,6 +178,24 @@ async def decide(aid:str,decision:str,req:Request):
         audit(db,user['username'],decision,aid,{'reason':reason,'before_version':r['base_version'],'data':json.loads(r['data'])})
     return {'status':'approved' if decision=='approve' else 'rejected'}
 
+@app.post('/api/register')
+async def register(req:Request):
+    if 'application/json' not in req.headers.get('content-type',''): fail(415,'Cần dữ liệu JSON')
+    key=('register',req.client.host); attempts=ATTEMPTS.setdefault(key,[])
+    attempts[:]=[t for t in attempts if t>time.time()-3600]
+    if len(attempts)>=5: fail(429,'Đã gửi nhiều yêu cầu. Vui lòng thử lại sau một giờ.')
+    attempts.append(time.time())
+    data=await req.json()
+    if not isinstance(data,dict): fail(422,'Dữ liệu không hợp lệ')
+    username=str(data.get('username','')).strip(); name=str(data.get('name','')).strip(); password=str(data.get('password',''))
+    if not 3<=len(username)<=100 or not 1<=len(name)<=200 or not 12<=len(password)<=200: fail(422,'Cần tên đăng nhập 3–100 ký tự, họ tên và mật khẩu 12–200 ký tự')
+    with engine.begin() as db:
+        if db.execute(text('SELECT id FROM users WHERE username=:u'),{'u':username}).first(): fail(409,'Tên đăng nhập đã được sử dụng')
+        salt=secrets.token_hex(16)
+        db.execute(text("INSERT INTO users(id,username,name,role,salt,password,active) VALUES(:id,:u,:n,'viewer',:s,:p,0)"),dict(id=secrets.token_hex(12),u=username,n=name,s=salt,p=password_hash(password,salt)))
+        audit(db,username,'request_account',username,{'role':'viewer','active':False})
+    return {'status':'pending','message':'Đã gửi đăng ký. Quản trị viên cần duyệt kích hoạt trước khi bạn đăng nhập.'}
+
 @app.get('/api/users')
 def users(req:Request):
     authenticated(req,{'admin'})

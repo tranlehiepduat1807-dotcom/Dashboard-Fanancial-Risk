@@ -111,3 +111,13 @@ def test_report_audited():
 def test_admin_cannot_self_approve():
     c=client('admin'); aid=c.post('/api/records/positions',json={'data':{**position(),'symbol':'SELF'}}).json()['id']
     assert c.post('/api/approvals/'+aid+'/approve',json={'reason':'self'}).status_code==403
+
+def test_registration_requires_admin_activation():
+    c=TestClient(app)
+    r=c.post('/api/register',json={'username':'signup-user','name':'New User','password':'Signup-password-123','role':'admin'})
+    assert r.status_code==200 and r.json()['status']=='pending'
+    assert c.post('/api/login',json={'username':'signup-user','password':'Signup-password-123'}).status_code==401
+    admin=client('admin');row=next(u for u in admin.get('/api/users').json() if u['username']=='signup-user')
+    assert row['role']=='viewer' and row['active']==0
+    assert admin.post('/api/users/'+row['id']+'/active',json={'active':True}).status_code==200
+    assert c.post('/api/login',json={'username':'signup-user','password':'Signup-password-123'}).status_code==200
