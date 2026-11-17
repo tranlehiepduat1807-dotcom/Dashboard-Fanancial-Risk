@@ -9,3 +9,5 @@ __pycache__/
 enterprise/LOCAL_ACCESS.txt
 enterprise/.qa-credentials.json
 enterprise/qa-private/
+
+enterprise/.qa-ui.json

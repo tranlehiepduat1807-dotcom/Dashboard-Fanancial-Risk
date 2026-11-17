@@ -9,7 +9,7 @@ with sync_playwright() as p:
     page.goto('http://127.0.0.1:8000')
     page.locator('#login-form [name=username]').fill('duat.admin')
     page.locator('#login-form [name=password]').fill(secrets['duat.admin'])
-    page.locator('#login-form button').click()
+    page.locator('#login-form button.primary').click()
     page.locator('.kpis').wait_for()
     Path('shots').mkdir(exist_ok=True)
     page.screenshot(path='shots/enterprise-desktop.png',full_page=True)

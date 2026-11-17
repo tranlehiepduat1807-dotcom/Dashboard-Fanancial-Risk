@@ -121,3 +121,8 @@ def test_registration_requires_admin_activation():
     assert row['role']=='viewer' and row['active']==0
     assert admin.post('/api/users/'+row['id']+'/active',json={'active':True}).status_code==200
     assert c.post('/api/login',json={'username':'signup-user','password':'Signup-password-123'}).status_code==200
+
+def test_report_uses_selected_confidence():
+    c=client('viewer')
+    assert c.get('/api/report?confidence=0.975&shock=-0.2').json()['confidence']==0.975
+    assert c.get('/api/report?confidence=0.5').status_code==422

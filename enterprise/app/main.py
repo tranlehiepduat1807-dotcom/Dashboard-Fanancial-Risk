@@ -237,10 +237,11 @@ async def user_active(uid:str,req:Request):
     return {'active':active}
 
 @app.get('/api/report')
-def report(req:Request):
+def report(req:Request,confidence:float=.99,shock:float=-.15,rate:float=.02):
     user=authenticated(req)
+    if confidence not in [.95,.975,.99] or not -.9<=shock<=1 or not -.2<=rate<=.2: fail(422,'Tham số mô hình ngoài phạm vi')
     with engine.begin() as db:
-        result=analytics(db)
+        result=analytics(db,confidence,shock,rate)
         audit(db,user['username'],'export_report','analytics',{'asof':result['asof'],'confidence':result['confidence']})
     return result
 

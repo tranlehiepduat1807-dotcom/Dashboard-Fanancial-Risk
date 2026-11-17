@@ -761,7 +761,7 @@ function bind() {
   if ($("#snapshot"))
     $("#snapshot").onclick = async () => {
       try {
-        const report = await api("report");
+        const report = await api(`report?confidence=${confidence}&shock=${shock}&rate=${rate}`);
         save(
           new Blob([JSON.stringify(report, null, 2)], {
             type: "application/json",

@@ -10,7 +10,9 @@
     <title>Risk Management · Enterprise</title>
     <link rel="stylesheet" href="/static/fonts.css" />
     <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="/static/experience.css" />
     <script defer src="/static/app.js"></script>
+    <script defer src="/static/experience.js"></script>
   </head>
   <body>
     <a class="skip" href="#main">Đến nội dung chính</a>
@@ -41,7 +43,9 @@
             required /></label
         ><button class="primary">Vào không gian làm việc →</button>
         <p id="login-error" role="alert"></p>
-        <button type="button" id="open-register">Chưa có tài khoản? Đăng ký truy cập</button>
+        <button type="button" id="open-register">
+          Chưa có tài khoản? Đăng ký truy cập
+        </button>
         <small
           >Dữ liệu lưu trên máy chủ của tổ chức. Liên hệ quản trị viên nếu cần
           cấp quyền.</small
@@ -50,16 +54,53 @@
     </div>
     <dialog id="register-dialog">
       <form id="register-form">
-        <div class="dialog-head"><h2>Đăng ký truy cập</h2><button type="button" id="close-register" aria-label="Đóng đăng ký">×</button></div>
-        <p class="muted">Tài khoản mới cần quản trị viên kích hoạt và được cấp quyền chỉ xem.</p>
+        <div class="dialog-head">
+          <h2>Đăng ký truy cập</h2>
+          <button type="button" id="close-register" aria-label="Đóng đăng ký">
+            ×
+          </button>
+        </div>
+        <p class="muted">
+          Tài khoản mới cần quản trị viên kích hoạt và được cấp quyền chỉ xem.
+        </p>
         <div class="form-grid">
-          <label>Họ tên<input name="name" autocomplete="name" maxlength="200" required></label>
-          <label>Tên đăng nhập<input name="username" autocomplete="username" minlength="3" maxlength="100" required></label>
-          <label>Mật khẩu<input name="password" type="password" autocomplete="new-password" minlength="12" maxlength="200" required></label>
-          <label>Nhập lại mật khẩu<input name="confirm" type="password" autocomplete="new-password" minlength="12" required></label>
+          <label
+            >Họ tên<input
+              name="name"
+              autocomplete="name"
+              maxlength="200"
+              required
+          /></label>
+          <label
+            >Tên đăng nhập<input
+              name="username"
+              autocomplete="username"
+              minlength="3"
+              maxlength="100"
+              required
+          /></label>
+          <label
+            >Mật khẩu<input
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              minlength="12"
+              maxlength="200"
+              required
+          /></label>
+          <label
+            >Nhập lại mật khẩu<input
+              name="confirm"
+              type="password"
+              autocomplete="new-password"
+              minlength="12"
+              required
+          /></label>
         </div>
         <p id="register-result" role="status"></p>
-        <div class="dialog-actions"><button type="submit" class="primary">Gửi đăng ký</button></div>
+        <div class="dialog-actions">
+          <button type="submit" class="primary">Gửi đăng ký</button>
+        </div>
       </form>
     </dialog>
     <div id="workspace" hidden>
@@ -87,7 +128,13 @@
             <span id="breadcrumb">Tổng quan</span></span
           >
           <div class="header-right">
-            <span class="tag">Đơn vị: tỷ VND</span><span id="clock"></span>
+            <button
+              id="command-open"
+              class="command-trigger"
+              aria-label="Tìm nhanh phân hệ"
+            >
+              <span>Tìm phân hệ…</span><kbd>Ctrl K</kbd></button
+            ><span class="tag">Đơn vị: tỷ VND</span><span id="clock"></span>
           </div>
         </header>
         <main id="main" tabindex="-1">
@@ -99,6 +146,7 @@
             </div>
             <div id="page-actions"></div>
           </div>
+          <div id="data-context"></div>
           <div id="content" aria-live="polite"></div>
         </main>
         <footer>
@@ -123,6 +171,53 @@
         <div class="dialog-actions">
           <button type="button" id="cancel-dialog">Hủy</button
           ><button class="primary" type="submit">Gửi phê duyệt</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="command-dialog" aria-labelledby="command-title">
+      <div class="dialog-head">
+        <h2 id="command-title">Đi đến phân hệ</h2>
+        <button type="button" id="command-close" aria-label="Đóng tìm kiếm">
+          ×
+        </button>
+      </div>
+      <label class="command-label"
+        >Tên phân hệ<input
+          id="command-search"
+          type="search"
+          placeholder="Danh mục, margin, phê duyệt…"
+          autocomplete="off"
+      /></label>
+      <div id="command-results"></div>
+      <p class="muted">Chọn kết quả để mở · Esc để đóng</p>
+    </dialog>
+    <dialog id="decision-dialog" aria-labelledby="decision-title">
+      <form id="decision-form">
+        <div class="dialog-head">
+          <h2 id="decision-title">Xem xét đề nghị</h2>
+          <button
+            id="decision-close"
+            type="button"
+            aria-label="Đóng quyết định"
+          >
+            ×
+          </button>
+        </div>
+        <div id="decision-detail"></div>
+        <label
+          >Lý do quyết định<textarea
+            name="reason"
+            placeholder="Ghi rõ kết quả kiểm tra và lý do quyết định…"
+            maxlength="2000"
+            required
+          ></textarea>
+        </label>
+        <p id="decision-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="button" id="decision-cancel">Quay lại</button
+          ><button id="decision-submit" class="primary" type="submit">
+            Xác nhận
+          </button>
         </div>
       </form>
     </dialog>
