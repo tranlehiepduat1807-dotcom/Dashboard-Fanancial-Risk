@@ -19,3 +19,6 @@ Mở `index.html` hoặc chạy `python -m http.server 8766` từ thư mục d�
 `qa.html` kiểm tra 19 luồng thao tác trên trình duyệt. `review.html` hiển thị các phân hệ để rà soát giao diện. Xem `DESIGN_REVIEW.md` cho phạm vi kiểm tra và các cảnh báo còn mở.
 
 Đây là bản thử nghiệm, không phải báo cáo pháp lý hay hệ thống vận hành đã được xác nhận tuân thủ.
+## Bản doanh nghiệp có máy chủ
+
+Mã nguồn và hướng dẫn của ứng dụng nhiều người dùng nằm tại [enterprise/README.md](enterprise/README.md): đăng nhập, phân quyền, cơ sở dữ liệu, quản lý rủi ro, maker/checker và API nhập liệu. Bản GitHub Pages tại thư mục gốc vẫn là giao diện demo tĩnh; cần chạy backend để sử dụng các chức năng doanh nghiệp.

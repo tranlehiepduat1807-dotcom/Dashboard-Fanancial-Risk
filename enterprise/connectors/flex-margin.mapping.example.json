@@ -1,0 +1,13 @@
+{
+  "_note": "ILLUSTRATIVE ONLY. Replace paths with field names from the company's FSS API specification. Not an FSS contract.",
+  "rows_path": ["example_rows"],
+  "fields": {
+    "account": {"path": ["example_account"]},
+    "name": {"path": ["example_name"]},
+    "debt": {"path": ["example_debt_vnd"], "scale": "0.000000001"},
+    "collateral": {"path": ["example_collateral_vnd"], "scale": "0.000000001"},
+    "haircut": {"path": ["example_haircut_percent"], "scale": "0.01"},
+    "maintenance": {"path": ["example_ltv_percent"], "scale": "0.01"},
+    "due": {"path": ["example_due_iso"]}
+  }
+}

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Không gian quản trị rủi ro công ty chứng khoán"
+    />
+    <title>Risk Management · Enterprise</title>
+    <link rel="stylesheet" href="/static/fonts.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Đến nội dung chính</a>
+    <div id="login" class="login">
+      <div class="login-intro">
+        <div class="brand">R/M <span>Risk Management</span></div>
+        <h1>Quyết định từ<br />dữ liệu rủi ro.</h1>
+        <p>
+          Danh mục, giới hạn và quy trình phê duyệt trong một không gian làm
+          việc.
+        </p>
+        <div class="login-line">SECURITIES RISK WORKSPACE · 1.0</div>
+      </div>
+      <form id="login-form" class="login-form">
+        <span class="eyebrow">KHÔNG GIAN DOANH NGHIỆP</span>
+        <h2>Đăng nhập</h2>
+        <p>Dùng tài khoản được quản trị viên cấp.</p>
+        <label
+          >Tên đăng nhập<input
+            name="username"
+            autocomplete="username"
+            required /></label
+        ><label
+          >Mật khẩu<input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required /></label
+        ><button class="primary">Vào không gian làm việc →</button>
+        <p id="login-error" role="alert"></p>
+        <small
+          >Dữ liệu lưu trên máy chủ của tổ chức. Liên hệ quản trị viên nếu cần
+          cấp quyền.</small
+        >
+      </form>
+    </div>
+    <div id="workspace" hidden>
+      <aside id="sidebar">
+        <div class="brand">
+          R/M <span>Risk Management<small>Enterprise workspace</small></span>
+        </div>
+        <div class="org">
+          <span>CÔNG TY CHỨNG KHOÁN</span
+          ><strong>Trung tâm quản trị rủi ro</strong>
+        </div>
+        <nav id="nav" aria-label="Phân hệ nghiệp vụ"></nav>
+        <div class="sidebar-bottom">
+          <span class="live-dot"></span> Máy chủ đã kết nối
+          <div id="identity"></div>
+          <button id="logout">Đăng xuất</button>
+        </div>
+      </aside>
+      <div class="shell">
+        <header>
+          <button id="menu" aria-expanded="false" aria-label="Mở điều hướng">
+            ☰</button
+          ><span
+            >Quản trị rủi ro <b>/</b>
+            <span id="breadcrumb">Tổng quan</span></span
+          >
+          <div class="header-right">
+            <span class="tag">Đơn vị: tỷ VND</span><span id="clock"></span>
+          </div>
+        </header>
+        <main id="main" tabindex="-1">
+          <div class="page-top">
+            <div>
+              <span class="eyebrow" id="section-label">ĐIỀU HÀNH</span>
+              <h1 id="title">Tổng quan rủi ro</h1>
+              <p id="subtitle"></p>
+            </div>
+            <div id="page-actions"></div>
+          </div>
+          <div id="content" aria-live="polite"></div>
+        </main>
+        <footer>
+          Risk Management Enterprise <span>•</span>
+          <span id="source-status"
+            >Dữ liệu nội bộ · Kiểm soát theo phân quyền</span
+          >
+        </footer>
+      </div>
+    </div>
+    <dialog id="editor">
+      <form id="record-form">
+        <div class="dialog-head">
+          <h2 id="dialog-title">Đề nghị thay đổi</h2>
+          <button type="button" id="close-dialog" aria-label="Đóng">×</button>
+        </div>
+        <p class="muted">
+          Thay đổi chỉ có hiệu lực khi được người khác phê duyệt.
+        </p>
+        <div id="fields" class="form-grid"></div>
+        <div id="form-error" role="alert"></div>
+        <div class="dialog-actions">
+          <button type="button" id="cancel-dialog">Hủy</button
+          ><button class="primary" type="submit">Gửi phê duyệt</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toast" role="status" hidden></div>
+  </body>
+</html>

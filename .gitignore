@@ -1,2 +1,11 @@
 .taste-skill/
 shots/
+enterprise/.venv/
+*.db
+__pycache__/
+.pytest_cache/
+.env
+
+enterprise/LOCAL_ACCESS.txt
+enterprise/.qa-credentials.json
+enterprise/qa-private/

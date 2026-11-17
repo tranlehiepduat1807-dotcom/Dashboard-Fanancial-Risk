@@ -1,0 +1,25 @@
+services:
+  database:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: risk
+      POSTGRES_USER: risk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - risk_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U risk]
+      interval: 5s
+      retries: 10
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://risk:${POSTGRES_PASSWORD}@database/risk
+      COOKIE_SECURE: ${COOKIE_SECURE:-0}
+    depends_on:
+      database:
+        condition: service_healthy
+volumes:
+  risk_data:
