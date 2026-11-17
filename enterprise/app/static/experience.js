@@ -262,6 +262,12 @@ function enhanceTables() {
         }
       }),
     );
+    // Apply alignment to the whole column, including blank/missing values.
+    Array.from(t.tHead.rows[0].cells).forEach((header, index) => {
+      if (header.classList.contains("numeric")) {
+        all().forEach((row) => row.cells[index]?.classList.add("numeric"));
+      }
+    });
   });
 }
 let decisionTarget;

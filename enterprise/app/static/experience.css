@@ -660,7 +660,7 @@ td:first-child {
   color: #294852;
 }
 td.numeric {
-  text-align: right;
+  text-align: center;
 }
 th:has(.sort-column) {
   padding: 0 16px;
@@ -1471,7 +1471,7 @@ footer {
   color: #5c737b;
 }
 .numeric .sort-column {
-  justify-content: flex-end;
+  justify-content: center;
 }
 #decision-error:empty {
   display: none;
@@ -1607,4 +1607,25 @@ nav a:focus-visible,.sidebar-bottom button:focus-visible{outline-color:#b2e5d1}
 }
 #content table .money-column .sort-column {
   justify-content: center;
+}
+
+/* Centre numeric labels independently from the sorting arrow. */
+#content table th.numeric,
+#content table td.numeric {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+#content table th.numeric .sort-column,
+#content table th.money-column .sort-column {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+  padding-inline: 22px;
+}
+#content table th.numeric .sort-column::after,
+#content table th.money-column .sort-column::after {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
 }
