@@ -223,8 +223,9 @@ function empty(msg = "Chưa có dữ liệu được phê duyệt.") {
   return `<div class="empty">${esc(msg)}</div>`;
 }
 function table(cols, rows) {
+  const columnClass = (column) => [column[2] || "", /\(tỷ\)|^(Giá trị|Tác động|TSBĐ cần bổ sung|Tiền vào|Tiền ra|Số dư sau dòng tiền)$/i.test(column[0]) ? "money-column" : ""].filter(Boolean).join(" ");
   return rows.length
-    ? `<div class="table-wrap"><table><thead><tr>${cols.map((c) => `<th scope="col">${esc(c[0])}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map((c) => `<td class="${c[2] || ""}">${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
+    ? `<div class="table-wrap"><table><thead><tr>${cols.map((c) => `<th scope="col" class="${columnClass(c)}">${esc(c[0])}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${cols.map((c) => `<td class="${columnClass(c)}">${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`
     : empty();
 }
 function kpis(items) {

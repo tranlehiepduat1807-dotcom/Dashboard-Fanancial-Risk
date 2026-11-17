@@ -1598,3 +1598,13 @@ nav a:focus-visible,.sidebar-bottom button:focus-visible{outline-color:#b2e5d1}
     min-width: 0;
   }
 }
+
+/* Monetary columns share a centred header and value alignment across modules. */
+#content table th.money-column,
+#content table td.money-column {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+#content table .money-column .sort-column {
+  justify-content: center;
+}
